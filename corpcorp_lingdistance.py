@@ -14,7 +14,7 @@ LIWC = pickle.load(file('LIWC2007dictionary_regex.pickle'))
 ######################################################################
 # Month-level by-user analysis
 
-def monthly_user_distances(filenames, min_monthly_messages=20):
+def monthly_user_distances(filenames, min_monthly_messages=20, liwc_map=True):
     """This is the main function for doing analysis by month.
 
     -- filenames: a list of the names of the pickle files
@@ -22,6 +22,9 @@ def monthly_user_distances(filenames, min_monthly_messages=20):
 
     -- min_monthly_messages: a threshold that can be set to avoid
        issues relating to sparsity
+
+    -- liwc_map: True means map each word to its LIWC category or categories
+       if there are any, else ignore that word; False means no remapping
 
     The function returns a dictionary mapping each filename to
     a dictionary mapping (YYYY, MM) pairs to distance values.
@@ -31,7 +34,7 @@ def monthly_user_distances(filenames, min_monthly_messages=20):
         try:
             print '%d of %d: %s' % (i + 1, len(filenames), filename)
             member = corpcorp.Member(filename)
-            dists = member2monthly_dists(member, min_monthly_messages=min_monthly_messages)
+            dists = member2monthly_dists(member, min_monthly_messages=min_monthly_messages, liwc_map=liwc_map)
             # Can print results to the screen -- if something goes wrong, they
             # can be copied and pasted from stdout
             # print member.username, dists 
